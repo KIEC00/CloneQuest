@@ -88,8 +88,12 @@ public class PlayerMovement : MonoBehaviour
             var alongGround = new Vector2(groundNormal.y, -groundNormal.x);
             var relativeVelocity = _frameVelocity - _platformVelocity;
             _frameVelocity = ((direction == 0)
-                ? Vector2.MoveTowards(relativeVelocity, Vector2.zero, _config.Deceleration)
-                : Vector2.MoveTowards(relativeVelocity, _config.Velocity * move * alongGround, _config.Acceleration * Time.fixedDeltaTime))
+                ? Vector2.MoveTowards(relativeVelocity, Vector2.zero, _config.Deceleration * Time.fixedDeltaTime)
+                : Vector2.MoveTowards(relativeVelocity, _config.Velocity * move * alongGround,
+                    (direction != -MathF.Sign(relativeVelocity.x)
+                        ? _config.Acceleration
+                        : MathF.Max(_config.Acceleration, _config.Deceleration))
+                    * Time.fixedDeltaTime))
                 + _platformVelocity;
         }
         else

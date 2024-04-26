@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _velocity: 15
   _acceleration: 100
-  _deceleration: 70
+  _deceleration: 200
   _airVelocity: 10
   _airAcceleration: 80
   _airDeceleration: 0

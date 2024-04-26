@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 560124981641999004}
   - component: {fileID: 7411711130034415796}
   - component: {fileID: 266205145893600881}
+  - component: {fileID: 5492038388812475509}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -374,9 +375,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e1dd2db052594448ac33ea0d6b20e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 128
+  _contactFilter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 641
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
   _rigidbody: {fileID: 672753259788737339}
   _direction: {x: 0, y: -1}
   _distance: 0.05
@@ -423,6 +435,34 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   _rigidbody: {fileID: 672753259788737339}
+--- !u!114 &5492038388812475509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307875421697334982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a504f54eba2eafa4fa7fd4717f3e4299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 672753259788737339}
+  _filter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 512
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  _offset: 1
 --- !u!1 &7667547649798557040
 GameObject:
   m_ObjectHideFlags: 0

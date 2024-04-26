@@ -4,21 +4,15 @@ using System.Collections.Generic;
 
 public class RigidBodySensor : Sensor
 {
-    [SerializeField] private LayerMask _layerMask;
     [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private ContactFilter2D _contactFilter;
     [SerializeField] private Vector2 _direction;
     [SerializeField] private float _distance;
 
     public override RaycastHit2D Hit => TimeUpdate() ? CastUpdate() : _lastHit;
 
     private RaycastHit2D _lastHit;
-    private ContactFilter2D _contactFilter;
     private float _lastUpdated = 0f;
-
-    private void Awake()
-    {
-        _contactFilter.SetLayerMask(_layerMask);
-    }
 
     private bool TimeUpdate()
     {
@@ -44,6 +38,8 @@ public class RigidBodySensor : Sensor
     private void OnValidate()
     {
         _direction.Normalize();
+        if (_direction.sqrMagnitude == 0f) { Debug.LogWarning("Direction was not set"); }
+        if (_distance == 0f) { Debug.LogWarning("Distance was not set"); }
         if (!_rigidbody) { _rigidbody = GetComponent<Rigidbody2D>(); }
     }
 
