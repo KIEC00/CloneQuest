@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class RigidBodySensor : Sensor
 {
     [SerializeField] private Rigidbody2D _rigidbody;

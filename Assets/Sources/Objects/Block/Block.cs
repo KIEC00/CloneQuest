@@ -1,63 +1,57 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(RigidBodySensor))]
 public class Block : MonoBehaviour
 {
-    [SerializeField]
-    private float maxSpeed = 1.0f;
+    [SerializeField] protected UnityEvent _onLanding;
+    [SerializeField] protected Rigidbody2D _rigidbody;
+    [SerializeField] protected RigidBodySensor _sensor;
+    [SerializeField][Range(0f, 200f)] protected float _deceleration;
+    [SerializeField][Range(0f, 90f)] protected float _maxSurfaceAngle;
+    [SerializeField] protected PhysicsMaterial2D _minFriction;
+    [SerializeField] protected PhysicsMaterial2D _maxFriction;
 
-    [SerializeField]
-    private float speedDecay = 0.01f;
+    protected Vector2 _groundVelocity;
+    protected bool _wasGrounded = true;
 
-    [SerializeField]
-    private Rigidbody2D _rb;
-
-    [SerializeField]
-    private RigidBodySensor _sensor;
-
-    private Vector2 _platformSpeed = Vector2.zero;
-
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up);
-        if (hit.collider != null && _rb.bodyType != RigidbodyType2D.Static && hit.collider.attachedRigidbody != null)
+        var frameVelocity = _rigidbody.velocity;
+        var hit = _sensor.Hit;
+        var groundCollider = hit.collider;
+        _rigidbody.sharedMaterial = _minFriction;
+        if (groundCollider)
         {
-            if (_platformSpeed != hit.collider.attachedRigidbody.velocity)
-            {
-                _platformSpeed = hit.collider.attachedRigidbody.velocity;
-                _rb.position += _platformSpeed * _platformSpeed * Time.fixedDeltaTime * Time.fixedDeltaTime;
-            }
+            if (!_wasGrounded) { _onLanding.Invoke(); _wasGrounded = true; }
+            var groundBody = groundCollider.attachedRigidbody;
+            var currentGroundVelocity = groundBody ? groundBody.velocity : Vector2.zero;
+            frameVelocity += currentGroundVelocity - _groundVelocity;
+            _groundVelocity = currentGroundVelocity;
 
-            //Find maximum plausible speed
-            Vector2 clampVel = _rb.velocity;
-            Vector2 platformVelocity = hit.collider.attachedRigidbody.velocity; 
-            Vector2 selfSpeed = clampVel - platformVelocity; //Speed component owned only by our object
-            var attachedRbMagnitudeX = MathF.Abs(hit.collider.attachedRigidbody.velocity.x);
-            //Clamp it
-            selfSpeed.x = Mathf.Clamp(selfSpeed.x, -maxSpeed, maxSpeed);
-            //Decay it
-            selfSpeed.x -= selfSpeed.x * speedDecay;
-            //Apply it
-            _rb.velocity = selfSpeed + platformVelocity;
+            var groundNormal = _sensor.Hit.normal;
+            var angle = Vector2.Angle(Vector2.up, groundNormal);
+            if (angle <= _maxSurfaceAngle)
+            {
+                frameVelocity = Vector2.MoveTowards(frameVelocity, currentGroundVelocity, _deceleration * Time.fixedDeltaTime);
+                if ((frameVelocity - currentGroundVelocity).sqrMagnitude == 0f) { _rigidbody.sharedMaterial = _maxFriction; }
+            }
         }
-        else
+        else if (_wasGrounded)
         {
-            _platformSpeed = Vector2.zero;
-            Vector2 clampVel = _rb.velocity;
-            clampVel.x = Mathf.Clamp(clampVel.x, -maxSpeed, maxSpeed);
-            clampVel.x -= clampVel.x * speedDecay;
-            _rb.velocity = clampVel;
+            _wasGrounded = false;
+            _groundVelocity = Vector2.zero;
         }
+        _rigidbody.velocity = frameVelocity;
     }
 
-
 #if UNITY_EDITOR
-    private void OnValidate()
+    protected void OnValidate()
     {
-        if (_rb == null)
-            _rb = GetComponent<Rigidbody2D>();
+        if (_rigidbody == null) { _rigidbody = GetComponent<Rigidbody2D>(); }
+        if (_sensor == null) { _sensor = GetComponent<RigidBodySensor>(); }
     }
 #endif
 }
