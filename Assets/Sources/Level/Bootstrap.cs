@@ -44,6 +44,7 @@ public class Bootstrap : MonoBehaviour, ILevelSoftResetStartHandler, ILevelSoftR
     public void OnLevelStart()
     {
         _input.Game.Move.actionMap.actionTriggered -= OnAnyButtonPressed;
+        // TODO Wait for fixed update
         _cloneSystem.Start();
     }
 

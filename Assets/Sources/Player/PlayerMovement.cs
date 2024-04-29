@@ -69,7 +69,9 @@ public class PlayerMovement : MonoBehaviour
     {
         _frameVelocity = _rigidbody.velocity;
         var platform = _groundSensor.Hit.rigidbody;
-        _platformVelocity = platform ? platform.velocity : Vector2.zero;
+        var currentPlatformVelocity = platform ? platform.velocity : Vector2.zero;
+        _frameVelocity += currentPlatformVelocity - _platformVelocity;
+        _platformVelocity = currentPlatformVelocity;
     }
 
     #endregion
