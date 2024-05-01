@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -28,10 +30,11 @@ public class PlayerMovement : MonoBehaviour
         HandleJump();
         UpdateRotation();
         HandleGravity();
+        PushObjects();
         ApplyVelocity();
     }
 
-    # region Collisions
+    #region Collisions
 
     private bool _isGrounded;
     private bool _wasGrounded;
@@ -172,6 +175,21 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #endregion Rotation
+
+    #region Pushing
+    [SerializeField] private ContactFilter2D _pushFilter;
+    private void PushObjects()
+    {
+        var direction = MathF.Sign(_frameVelocity.x - _platformVelocity.x);
+        if (direction == 0) { return; }
+        var hits = new List<RaycastHit2D>();
+        if (_rigidbody.Cast(direction > 0 ? Vector2.right : Vector2.left, _pushFilter, hits, MathF.Abs(_frameVelocity.x) * Time.fixedDeltaTime) == 0) { return; }
+        IPushing pushing = null;
+        hits.FirstOrDefault((hit) => hit.transform != _groundSensor.Hit.transform && hit.transform.TryGetComponent(out pushing));
+        if (pushing == null) { return; }
+        pushing.Push(_frameVelocity.x);
+    }
+    #endregion
 
     private void ApplyVelocity() => _rigidbody.velocity = _frameVelocity;
 

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6517634723286034829}
   - component: {fileID: 3336521168691024567}
   - component: {fileID: 361636615782658298}
-  - component: {fileID: 5133642998400051633}
-  - component: {fileID: -4183321527701741439}
+  - component: {fileID: 1013011494442242350}
   - component: {fileID: 6298763516780490395}
+  - component: {fileID: -4183321527701741439}
   m_Layer: 9
   m_Name: Block
   m_TagString: Untagged
@@ -101,7 +101,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -161,7 +161,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5133642998400051633
+--- !u!114 &1013011494442242350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 242772488211810211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a89b0280f55dc849840553bb6e0a835, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b779252f1579044ab93151654c05864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onLanding:
@@ -178,53 +178,10 @@ MonoBehaviour:
       m_Calls: []
   _rigidbody: {fileID: 3336521168691024567}
   _sensor: {fileID: 6298763516780490395}
-  _deceleration: 50
+  _deceleration: 100
   _maxSurfaceAngle: 45
   _minFriction: {fileID: 6200000, guid: d9c3dae0ee4645e41b8a3b685763ac66, type: 2}
-  _maxFriction: {fileID: 6200000, guid: 0ebde9af61ce8fc4da922ef4c3e173c9, type: 2}
---- !u!114 &-4183321527701741439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 242772488211810211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1888652eef1475e428a627f09ee327e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartActions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5133642998400051633}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  EndActions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5133642998400051633}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  _rigidbody: {fileID: 3336521168691024567}
+  _maxFriction: {fileID: 6200000, guid: 74e3a92ed84865842811d49240209c4c, type: 2}
 --- !u!114 &6298763516780490395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,3 +211,46 @@ MonoBehaviour:
     maxNormalAngle: 0
   _direction: {x: 0, y: -1}
   _distance: 0.05
+--- !u!114 &-4183321527701741439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242772488211810211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1888652eef1475e428a627f09ee327e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartActions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1013011494442242350}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EndActions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1013011494442242350}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  _rigidbody: {fileID: 3336521168691024567}
