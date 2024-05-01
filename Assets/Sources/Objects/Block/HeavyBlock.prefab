@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 6517634723286034829}
   - component: {fileID: 3336521168691024567}
   - component: {fileID: 361636615782658298}
-  - component: {fileID: 1013011494442242350}
+  - component: {fileID: 5410416638735444275}
   - component: {fileID: 6298763516780490395}
   - component: {fileID: -4183321527701741439}
   m_Layer: 0
-  m_Name: Block
+  m_Name: HeavyBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13, y: -8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.4481132, g: 1, b: 0.5913027, a: 1}
+  m_Color: {r: 1, g: 0.6290394, b: 0.4470588, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -101,7 +101,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -161,7 +161,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1013011494442242350
+--- !u!114 &5410416638735444275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 242772488211810211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b779252f1579044ab93151654c05864, type: 3}
+  m_Script: {fileID: 11500000, guid: b87f15645760587489108388ff10057c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onLanding:
@@ -178,11 +178,11 @@ MonoBehaviour:
       m_Calls: []
   _rigidbody: {fileID: 3336521168691024567}
   _sensor: {fileID: 6298763516780490395}
-  _deceleration: 100
+  _deceleration: 200
   _maxSurfaceAngle: 45
   _minFriction: {fileID: 6200000, guid: d9c3dae0ee4645e41b8a3b685763ac66, type: 2}
   _maxFriction: {fileID: 6200000, guid: 74e3a92ed84865842811d49240209c4c, type: 2}
-  _clampPushingVelocity: 10
+  _clampPushingVelocity: 7
 --- !u!114 &6298763516780490395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
   StartActions:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1013011494442242350}
+      - m_Target: {fileID: 5410416638735444275}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -242,7 +242,7 @@ MonoBehaviour:
   EndActions:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1013011494442242350}
+      - m_Target: {fileID: 5410416638735444275}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
