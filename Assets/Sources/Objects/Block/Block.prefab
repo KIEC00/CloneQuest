@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1013011494442242350}
   - component: {fileID: 6298763516780490395}
   - component: {fileID: -4183321527701741439}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,6 +182,20 @@ MonoBehaviour:
   _maxSurfaceAngle: 45
   _minFriction: {fileID: 6200000, guid: d9c3dae0ee4645e41b8a3b685763ac66, type: 2}
   _maxFriction: {fileID: 6200000, guid: 74e3a92ed84865842811d49240209c4c, type: 2}
+  _pushFilter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
 --- !u!114 &6298763516780490395
 MonoBehaviour:
   m_ObjectHideFlags: 0

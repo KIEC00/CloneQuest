@@ -177,15 +177,15 @@ public class PlayerMovement : MonoBehaviour
     #endregion Rotation
 
     #region Pushing
-    [SerializeField] private ContactFilter2D _pushFilter;
     private void PushObjects()
     {
         var direction = MathF.Sign(_frameVelocity.x - _platformVelocity.x);
         if (direction == 0) { return; }
         var hits = new List<RaycastHit2D>();
-        if (_rigidbody.Cast(direction > 0 ? Vector2.right : Vector2.left, _pushFilter, hits, MathF.Abs(_frameVelocity.x) * Time.fixedDeltaTime) == 0) { return; }
+        if (_rigidbody.Cast(direction > 0 ? Vector2.right : Vector2.left, hits, MathF.Abs(_frameVelocity.x) * Time.fixedDeltaTime) == 0) { return; }
         IPushing pushing = null;
-        hits.FirstOrDefault((hit) => hit.transform != _groundSensor.Hit.transform && hit.transform.TryGetComponent(out pushing));
+        var hit = hits.OrderBy(hit => hit.point.y)
+            .FirstOrDefault(hit => hit.transform != _groundSensor.Hit.transform && hit.transform.TryGetComponent(out pushing));
         if (pushing == null) { return; }
         pushing.Push(_frameVelocity.x);
     }
