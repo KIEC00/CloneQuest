@@ -1,16 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerControls))]
 [RequireComponent(typeof(Sensor))]
-public class PlayerMovement : MonoBehaviour
+[DefaultExecutionOrder(-1)]
+public class PlayerMovement : MonoBehaviour, IPushing
 {
     [SerializeField] private PlayerControls _controls;
     [SerializeField] private PlayerConfig _config;
     [SerializeField] private Transform _flipAnchor;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Sensor _groundSensor;
+    [SerializeField] private ContactFilter2D _pushFilter;
 
     private Vector2 _frameVelocity;
     private Vector2 _platformVelocity;
@@ -28,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
         HandleJump();
         UpdateRotation();
         HandleGravity();
+        PushObject();
         ApplyVelocity();
     }
 
@@ -90,7 +95,9 @@ public class PlayerMovement : MonoBehaviour
             var alongGround = new Vector2(groundNormal.y, -groundNormal.x);
             var relativeVelocity = _frameVelocity - _platformVelocity;
             _frameVelocity = ((direction == 0)
-                ? Vector2.MoveTowards(relativeVelocity, Vector2.zero, _config.Deceleration * Time.fixedDeltaTime)
+                ? _isPushing
+                    ? relativeVelocity
+                    : Vector2.MoveTowards(relativeVelocity, Vector2.zero, _config.Deceleration * Time.fixedDeltaTime)
                 : Vector2.MoveTowards(relativeVelocity, _config.Velocity * move * alongGround,
                     (direction != -MathF.Sign(relativeVelocity.x)
                         ? _config.Acceleration
@@ -172,6 +179,28 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #endregion Rotation
+
+    #region Pushing
+
+    private bool _isPushing = false;
+    private void PushObject()
+    {
+        _isPushing = false;
+        if (!_isGrounded || MathF.Sign(_frameVelocity.x - _platformVelocity.x) == 0) { return; }
+        var castResult = new List<RaycastHit2D>();
+        if (_rigidbody.Cast(_rigidbody.velocity.normalized, _pushFilter, castResult, Physics2D.defaultContactOffset * 2) == 0) { return; }
+        IPushing pushing = null;
+        var hit = castResult
+            .OrderBy(cast => cast.point.y)
+            .FirstOrDefault(cast => cast.transform != _groundSensor.Hit.transform && cast.transform.TryGetComponent<IPushing>(out pushing));
+        if (pushing == null) { return; }
+        pushing.Push(_frameVelocity.x);
+    }
+
+    public void Push(float velocity) { }
+    public void PushChain(float velocity, List<Transform> pushed) => _isPushing = true;
+
+    #endregion
 
     private void ApplyVelocity() => _rigidbody.velocity = _frameVelocity;
 
