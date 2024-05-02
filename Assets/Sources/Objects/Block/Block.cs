@@ -20,18 +20,17 @@ public class Block : MonoBehaviour
     protected void FixedUpdate()
     {
         var frameVelocity = _rigidbody.velocity;
-        var hit = _sensor.Hit;
-        var groundCollider = hit.collider;
         _rigidbody.sharedMaterial = _minFriction;
-        if (groundCollider)
+        if (_sensor.HitCount > 0)
         {
+            var hit = _sensor.Hit;
             if (!_wasGrounded) { _onLanding.Invoke(); _wasGrounded = true; }
-            var groundBody = groundCollider.attachedRigidbody;
+            var groundBody = hit.collider.attachedRigidbody;
             var currentGroundVelocity = groundBody ? groundBody.velocity : Vector2.zero;
             frameVelocity += currentGroundVelocity - _groundVelocity;
             _groundVelocity = currentGroundVelocity;
 
-            var groundNormal = _sensor.Hit.normal;
+            var groundNormal = hit.normal;
             var angle = Vector2.Angle(Vector2.up, groundNormal);
             if (angle <= _maxSurfaceAngle)
             {
